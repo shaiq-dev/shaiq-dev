@@ -1,0 +1,114 @@
+<launch>
+
+    <!-- NOTE FOR THE INSTRUCTORS -->
+    <!-- 
+        As we submitted at the last moment we just renamed the 
+        pkg_moveit_ur5_1_config to pkg_moveit_ur5_1. Same is done for 
+        ur5_2. It's a request to rename the folders to be able to run this
+        code perfectly. Thanku. 
+    -->
+    
+    <!-- Launch Task-4 Simulation Environment in Gazebo -->
+    <include file="$(find pkg_vb_sim)/launch/task5_simulation.launch" />
+
+    <!-- Launch Moveit Group Node -->
+    <!-- ur5_1 -->
+    <group ns="ur5_1">
+
+        <include file="$(find pkg_moveit_ur5_1_config)/launch/planning_context.launch">
+            <arg name="load_robot_description" value="true"/>
+        </include>
+
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+            <param name="/use_gui" value="false"/>
+            <rosparam param="/source_list">[/joint_states]</rosparam>
+        </node>
+
+        <include file="$(find pkg_moveit_ur5_1_config)/launch/move_group.launch">
+            <arg name="publish_monitored_planning_scene" value="true"/>
+        </include>
+
+        <include file="$(find pkg_moveit_ur5_1_config)/launch/moveit_rviz_robot1.launch">
+            <arg name="config" value="true"/>
+        </include>
+
+        <!-- Add the scene file for collision avoidance -->
+        <arg name="scene_file" default="$(find pkg_task5)/config/rviz/ur5_1_kiva_pod.scene"/> 
+        <node name = "moveit_publish_scene_from_text" pkg= "moveit_ros_planning" type = "moveit_publish_scene_from_text" args= "$(arg scene_file)"/>
+        
+    </group>
+
+    <!-- ur5_2 -->
+    <group ns="ur5_2">
+
+        <include file="$(find pkg_moveit_ur5_2_config)/launch/planning_context.launch">
+            <arg name="load_robot_description" value="true"/>
+        </include>
+
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+            <param name="/use_gui" value="false"/>
+            <rosparam param="/source_list">[/joint_states]</rosparam>
+        </node>
+
+        <include file="$(find pkg_moveit_ur5_2_config)/launch/move_group.launch">
+            <arg name="publish_monitored_planning_scene" value="true"/>
+        </include>
+
+        <include file="$(find pkg_moveit_ur5_2_config)/launch/moveit_rviz_robot2.launch">
+            <arg name="config" value="true"/>
+        </include>
+
+        <!-- Add the scene file for collision avoidance -->
+        <arg name="scene_file" default="$(find pkg_task5)/config/rviz/ur5_2_bin.scene"/> 
+        <node name = "moveit_publish_scene_from_text" pkg= "moveit_ros_planning" type = "moveit_publish_scene_from_text" args= "$(arg scene_file)"/>
+
+    </group> 
+
+    <!-- Load Yaml Config for ROS IOT Bridge -->
+    <rosparam file ="$(find pkg_ros_iot_bridge)/config/config_pyiot.yaml"/>
+    <!-- Launch ROS Bridge Node : node_action_server_ros_iot_bridge.py -->
+    <node 
+        pkg="pkg_ros_iot_bridge"
+        type="node_action_server_ros_iot_bridge.py"
+        name="node_action_server_ros_iot_bridge"
+        output="screen"
+    />
+
+
+    <!-- 
+        The below nodes should be run seperately inorder to get
+        things done perfectly
+    -->
+
+    <!-- FISRT NODE TO BE RUN -->
+    <!-- ur5_2 -->
+    <!-- <node 
+        pkg="pkg_task4"
+        type="node_pick_and_sort_pkgs.py"
+        name="node_pick_and_sort_pkgs"
+        output="screen"
+    /> -->
+
+    <!-- 2ND NODE TO BE RUN -->
+    <!-- ur5_1 -->
+    <!-- <node 
+        pkg="pkg_task4"
+        type="node_detect_and_place_pkgs.py"
+        name="node_detect_and_place_pkgs"
+        output="screen"
+    /> -->
+
+    <!-- Bag File Recording -->
+    <arg name="record" default="false"/>
+    <arg name="rec_name" default="t4.bag"/>
+    <group if="$(arg record)">
+        <node 
+            name="rosbag_record_pick" 
+            pkg="rosbag" 
+            type="record"
+            args="record -O $(find pkg_task4)/bag_files/$(arg rec_name) --chunksize=10 /eyrc/vb/ur5_1/vacuum_gripper/logical_camera/ur5_1 /eyrc/vb/ur5_2/vacuum_gripper/logical_camera/ur5_2" 
+            output="screen"
+        />
+    </group>
+    
+</launch>
