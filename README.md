@@ -1,5 +1,5 @@
-
-[![Shaiq Kar](./assets/banner.png)](https://shaiqkar.me)
+<!-- Torus Banner -->
+[![Shaiq Kar](./assets/torus.svg)](https://shaiqkar.vercel.app)
 
 <!-- GitHub stats -->
 <b>⚡ My Dev Statistics</b>
