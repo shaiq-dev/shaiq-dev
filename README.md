@@ -1,4 +1,7 @@
-<!-- Torus Banner -->
-[![Shaiq Kar](./assets/torus.svg)](https://shaiqkar.vercel.app)
+<p align="center">
+    <img src="./assets/torus.svg" />
+</p>
 
-<p align="center" style="color:#D40749;font-size:18px;font-weight:500">Culture is not your friend</p>
+<p align="center">
+    <img src="https://img.shields.io/badge/-Culture%20is%20not%20your%20friend-%23D40749?style=for-the-badge" />
+</p>
