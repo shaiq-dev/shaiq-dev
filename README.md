@@ -1,7 +1,5 @@
 <p align="center">
-    <a href="https://shaiqkar.vercel.app" title="👋 Hey there, I am Shaiq">
-        <img src="./assets/torus.svg" />
-    </a>
+    <img src="./assets/torus.svg" title="👋 Hey there, I am Shaiq" />
 </p>
 
 <p align="center">
