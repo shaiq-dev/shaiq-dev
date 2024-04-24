@@ -1,5 +1,6 @@
-<p align="center">
-    <img src="./assets/header.svg" />
-    <img src="./assets/torus.svg" />
-    <img src="./assets/footer.svg" />
-</p>
+<!-- Background: #000000 -->
+&#x1F7E0;
+
+![](./assets/header.svg)
+![](./assets/torus.svg)
+![](./assets/footer.svg)
